@@ -40,15 +40,11 @@ void loop() {
 void checkForInput(){
   while(Serial.available()>0){
     input = Serial.readString();
+    Serial.println(input);
   }
-  if(0<input.toInt()<4){
-    distanceArray[0][0] = input.toInt();
+    servoAngleArray[0][0] = input.toInt();
     updateModel();
-  }
-  else{
-    Serial.println("The blocks can only move 4 inches");
-  }
-  input = "";
+  
 }
 
 void updateModel(){
@@ -60,6 +56,8 @@ void updateModel(){
   }
 }
 void setHeightToRow(int row){
+  Serial.print("Set height to row");
+  Serial.println(row);
 pushServo0.write(servoAngleArray[row][0]);
 pushServo1.write(servoAngleArray[row][1]);
 pushServo2.write(servoAngleArray[row][2]);
