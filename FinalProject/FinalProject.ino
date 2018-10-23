@@ -1,4 +1,5 @@
 #include <Servo.h>
+#include <FileIO.h>
 
 Servo pushServo0;
 Servo pushServo1;
@@ -25,23 +26,22 @@ Servo lockServo9;
 int distanceArray[10][10];
 int servoAngleArray[10][10];
 
+File myFile = FileSystem.open("inputs.txt");
+
 String input;
 void setup() {
   pushServo0.attach(10);
   Serial.begin(9600);
-
 }
 
 void loop() {
   checkForInput();
-  
-
 }
 void checkForInput(){
-  while(Serial.available()>0){
-    input = Serial.readString();
-    Serial.println(input);
-  }
+    for (int i=0; i<16; i++) {
+      input = myFile.read();
+      Serial.println(input);
+    }
     servoAngleArray[0][0] = input.toInt();
     updateModel();
   
