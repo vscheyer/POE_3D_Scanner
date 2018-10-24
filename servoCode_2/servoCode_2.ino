@@ -5,43 +5,40 @@ Servo pushServo0;
 
 int distanceArray[10][10];
 int servoAngleArray[10][10];
+int reading = 1;
 
 String input;
-  void setup() {
+int angle = 0;
+boolean newData = false;
+int oldAngle = 0;
+
+void setup() {
   pushServo0.attach(10);
   Serial.begin(9600);
-  
-  for (int i=0; i<9; i++) {
-    for (int k=0; k<9; k++) {
-      distanceArray[i][k] = random(1,5);
-      Serial.println(distanceArray[i][k]);
-      convertDistanceToServoAngle();
-    }
-  }
 }
 
 void loop() {
-  updateModel();
-
-}
-
-void convertDistanceToServoAngle(){
-//  Serial.println("Here are the angles");
-  for(int i=0; i<10; i++){
-    for(int j=0; j<10; j++){
-      int distance = distanceArray[i][j];
-      distance = map(distance,1,4,0,180);
-      servoAngleArray[i][j]= distance;
-//      Serial.println(servoAngleArray[i][j]);
-    }
+  while (Serial.available() > 0) {
+   //Serial.print("Waiting for input");
+   input = Serial.readString();
+   newData = true;
   }
-}
-
-void updateModel(){
-  for (int i=0; i<10; i++) {
-    for (int j=0; j<10; j++) {
-      pushServo0.write(servoAngleArray[i][j]);
-      delay(1000);
+  if (newData == true) {
+    angle = map(input.toInt(),0,4,180,0);
+    if (oldAngle < angle) {
+      for (int pos = oldAngle; pos <= angle; pos += 1) {
+        pushServo0.write(pos);
+        delay(15);
+      }
     }
+    else {
+      for (int pos = oldAngle; pos >= angle; pos -= 1) {
+        pushServo0.write(pos);
+        delay(15);
+      }
+    }
+    pushServo0.write(angle);
+    newData = false;
+    oldAngle = angle;
   }
 }
