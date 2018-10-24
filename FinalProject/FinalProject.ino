@@ -30,18 +30,22 @@ File myFile = FileSystem.open("inputs.txt");
 
 String input;
 void setup() {
-  pushServo0.attach(10);
-  Serial.begin(9600);
+pushServo0.attach(10);
+Serial.begin(9600);
 }
 
 void loop() {
   checkForInput();
 }
+
 void checkForInput(){
+  while (myFile.available()) {
+    Serial.print("the file is available!");
     for (int i=0; i<16; i++) {
       input = myFile.read();
       Serial.println(input);
     }
+  }
     servoAngleArray[0][0] = input.toInt();
     updateModel();
   
@@ -69,6 +73,7 @@ pushServo7.write(servoAngleArray[row][7]);
 pushServo8.write(servoAngleArray[row][8]);
 pushServo9.write(servoAngleArray[row][9]);
 }
+
 void convertDistanceToServoAngle(){
   for(int i = 0; i<10; i++){
     for(int j = 0; j<10; j++){
