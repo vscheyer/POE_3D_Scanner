@@ -1,12 +1,18 @@
+//THIS CODE CURRENTLY CONTROLS 2 SERVOS WITH HARDCODED VALUES
+
 #include <Servo.h>
 #include <FileIO.h>
+#include <SPI.h>
+#include <SD.h>
 
-Servo pushServo0;
+Servo pushServo1;
+Servo pushServo2;
 
-angleArray = [2][2];
 int distanceArray[2][2]; //for 2x2 matrix of blocks
+int angleArray[2][2];
 int servoAngleArray[2][2];
-int reading = 1;
+int r = 2;
+int c = 2;
 
 String input;
 int angle = 0;
@@ -14,35 +20,28 @@ boolean newData = false;
 int oldAngle = 0;
 
 void setup() {
-  pushServo1.attach(10);
-  pushServo2.attach(11);
+  pushServo1.attach(22); //digital pins on Arduino mega
+  pushServo2.attach(23);
   Serial.begin(9600);
+
+  distanceArray[1][1] = 1;
+  distanceArray[1][2] = 2;
+  distanceArray[2][1] = 3;
+  distanceArray[2][2] = 4;
+
+  for (c = 1; c < 11; c++) {
+    for (r = 1; r < 11; r++) {
+      angleArray[r][c] = map(distanceArray[r][c], 0, 4, 180, 0);
+    }
+  }
 }
 
 void loop() {
-  while (Serial.available() > 0) {
-   //Serial.print("Waiting for input");
-   input1 = Serial.readString();
-   angleArray[1] = map(input1.toInt(),0,4,180,0);
-   input2 = Serial.readString();
-   angleArray[2] = map(input2.toInt(),0,4,180,0);
-   newData = true;
-  }
-  if (newData == true) {
-    if (oldAngle < angle) {
-      for (int pos = oldAngle; pos <= angle; pos += 1) {
-        pushServo0.write(pos);
-        delay(15);
-      }
+  for (r = 1; r < 3; r++) {
+    for (c = 1; c < 3; c++) {
+      pushServo1.write(angleArray[r][c]);
+      pushServo2.write(angleArray[r][c]);
+      delay(2000);
     }
-    else {
-      for (int pos = oldAngle; pos >= angle; pos -= 1) {
-        pushServo0.write(pos);
-        delay(15);
-      }
-    }
-    pushServo0.write(angle);
-    newData = false;
-    oldAngle = angle;
   }
 }
