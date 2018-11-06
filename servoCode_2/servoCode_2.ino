@@ -13,6 +13,7 @@ int angleArray[2][2];
 int servoAngleArray[2][2];
 int r = 2;
 int c = 2;
+boolean servosDone;
 
 String input;
 int angle = 0;
@@ -41,7 +42,9 @@ void loop() {
     for (c = 1; c < 3; c++) {
       pushServo1.write(angleArray[r][c]);
       pushServo2.write(angleArray[r][c]);
-      delay(2000);
+      delay(300);
+      pushServo1.write(0); //reset servos for gantry to move
+      pushServo2.write(0);
     }
   }
 }
