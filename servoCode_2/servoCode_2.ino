@@ -1,18 +1,16 @@
 //THIS CODE CURRENTLY CONTROLS 2 SERVOS WITH HARDCODED VALUES
 
 #include <Servo.h>
-#include <FileIO.h>
-#include <SPI.h>
-#include <SD.h>
 
-Servo pushServo1;
-Servo pushServo2;
+Servo servo1;
+Servo servo2;
+Servo lockServo;
 
-int distanceArray[2][2]; //for 2x2 matrix of blocks
-int angleArray[2][2];
-int servoAngleArray[2][2];
+float distanceArray[10][10]; //for 2x2 matrix of blocks
+int angleArray[10][10];
+
 int r = 2;
-int c = 2;
+
 boolean servosDone;
 
 String input;
@@ -21,30 +19,48 @@ boolean newData = false;
 int oldAngle = 0;
 
 void setup() {
-  pushServo1.attach(22); //digital pins on Arduino mega
-  pushServo2.attach(23);
+  servo1.attach(22); //digital pins on Arduino mega
+  servo2.attach(23);
+  lockServo.attach(24);
   Serial.begin(9600);
+}
 
-  distanceArray[1][1] = 1;
-  distanceArray[1][2] = 2;
-  distanceArray[2][1] = 3;
-  distanceArray[2][2] = 4;
+void getInput() {
+  if (Serial.available()) {
+    input = ",1,2,3,4,"; //Serial.readString(); //read one row at a time
+    int rowIndex = input.substring(input.indexOf(",") + 1, input.indexOf(",", 1)).toInt();
+    input.remove(0, 2);
+    for (int c = 0; c < 10; c++) {
+      distanceArray[rowIndex][c] = input.substring(input.indexOf(',') + 1, input.indexOf(",", +1)).toFloat(); // find string between 2 commas
+      input.remove(0, 5); //remove first comma and number
+    }
+  }
+  else {
+    Serial.write(0);
+  }
+}
 
-  for (c = 1; c < 11; c++) {
-    for (r = 1; r < 11; r++) {
+void distanceToAngle() {
+  for (int c = 1; c < 11; c++) {
+    for (int r = 1; r < 11; r++) {
       angleArray[r][c] = map(distanceArray[r][c], 0, 4, 180, 0);
     }
   }
 }
 
 void loop() {
-  for (r = 1; r < 3; r++) {
-    for (c = 1; c < 3; c++) {
-      pushServo1.write(angleArray[r][c]);
-      pushServo2.write(angleArray[r][c]);
-      delay(300);
-      pushServo1.write(0); //reset servos for gantry to move
-      pushServo2.write(0);
+  for (int j = 0; j < 10; j++) {
+    for (int i = 0; i < 10; i++) {
+      Serial.write(1);
+      delay(10);
+      getInput();
+    }
+    distanceToAngle();
+    for (int r = 0; r < 1; r++) {
+      for (int c = 0; c < 1; c++) {
+        servo1.write(angleArray[r][c]);
+        servo2.write(angleArray[r][c]);
+      }
     }
   }
 }

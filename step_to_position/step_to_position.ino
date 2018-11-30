@@ -56,11 +56,11 @@ void StepForwardDefault()
 {
   Serial.println("Moving forward at default step mode.");
   digitalWrite(dir, LOW); //Pull direction pin low to move "forward"
-  for( int j = 1; j < 6401; j++){  //Loop the forward stepping enough times for motion to be visible
+  for( int j = 1; j < 190; j++){  //Loop the forward stepping enough times for motion to be visible
     digitalWrite(stp,HIGH); //Trigger one step forward
-    delay(1);
+    delay(2);
     digitalWrite(stp,LOW); //Pull step pin low so it can be triggered again
-    delay(1);
+    delay(2);
   }
   Serial.println("Enter new option");
   Serial.println();
