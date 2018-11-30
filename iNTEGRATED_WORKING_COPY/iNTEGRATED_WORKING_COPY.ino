@@ -56,7 +56,9 @@ void getInput() {
     inputString = "";
     stringComplete = false;
     rowCounter++;
-    if (rowCounter == 10) rowCounter = 1;
+    if (rowCounter == 10) {
+      rowCounter = 1;
+    }
     Serial.print(char(rowCounter));
   }
 }
