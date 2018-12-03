@@ -23,6 +23,17 @@ void setup()
 void draw()
 {
   background(0);
+
+  image(kinect.GetImage(), 0, 0, 640, 480);
+  noStroke();
+  rect(145, 50, 10, 10);
+  rect(145+37, 50, 10, 10);
+  rect(145, 50+38, 10, 10);
+  rect(145+37, 50+38, 10, 10);
+  
+  delay(1000);
+}
+void getDepthData(){
   PImage depthArray = kinect.GetDepth();
   depthArray.loadPixels();
 
@@ -36,19 +47,12 @@ void draw()
     }
   }
   println("full distancearray loaded");
-  image(kinect.GetImage(), 0, 0, 640, 480);
-  noStroke();
-  rect(145, 50, 10, 10);
-  rect(145+37, 50, 10, 10);
-  rect(145, 50+38, 10, 10);
-  rect(145+37, 50+38, 10, 10);
-  
-  delay(1000);
 }
 
 void keyPressed() {
   println("keyPressed opened");
   if (key == 10) { //key 10 = ENTER
+    getDepthData();
     sendRow(0);
   }
 }
@@ -70,7 +74,7 @@ void sendRow(int rowToSend) {
 void serialEvent(Serial myPort){
   inByte = myPort.read();
   delay(1000);
-  println("This is what the arduino sent back: "+inByte);
+  println("This is what the arduino sent back: " + inByte);
   if (inByte <9){
     sendRow(inByte);
     inByte = 100;
