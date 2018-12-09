@@ -1,18 +1,10 @@
 /*
-  Serial Event example
-   When new serial data arrives, this sketch adds it to a String.
-  When a newline is received, the loop prints the string and clears it.
-   A good test for this is to try it with a GPS receiver that sends out
-  NMEA 0183 sentences.
-   NOTE: The serialEvent() feature is not available on the Leonardo, Micro, or
-  other ATmega32U4 based boards.
-   created 9 May 2011
-  by Tom Igoe
-   This example code is in the public domain.
-   http://www.arduino.cc/en/Tutorial/SerialEvent
+Pandora Final Poe-Project of team Poetatos
+Authors: Richard Ballaux, Leo Liu, Alison Palmer, Vienna Scheyer
 */
+//IMPORTS--------------------------------------------------------------------
 #include <Servo.h>
-
+//Initializations of the servo's --------------------------------------------
 Servo servo1;
 Servo servo2;
 Servo servo3;
@@ -21,6 +13,8 @@ Servo lockServo1;
 Servo lockServo2;
 Servo lockServo3;
 Servo lockServo4;
+
+//Initializing global variables ---------------------------------------------
 
 String inputString = "";         // a String to hold incoming data
 bool stringComplete = false;  // whether the string is complete
