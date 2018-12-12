@@ -1,8 +1,9 @@
 //Declare pin functions on Redboard
 #define stp 2
 #define dir 3
-#define MS1 4
-#define MS2 5
+#define MS0 4
+#define MS1 5
+
 #define EN  6
 
 //Declare variables for functions
@@ -12,8 +13,8 @@ int state;
 void setup() {
   pinMode(stp, OUTPUT);
   pinMode(dir, OUTPUT);
+  pinMode(MS0, OUTPUT);
   pinMode(MS1, OUTPUT);
-  pinMode(MS2, OUTPUT);
   pinMode(EN, OUTPUT);
   resetEDPins(); //Set step, direction, microstep and enable pins to default states
   Serial.begin(9600); //Open Serial connection for debugging
@@ -46,8 +47,8 @@ void resetEDPins()
 {
   digitalWrite(stp, LOW);
   digitalWrite(dir, LOW);
-  digitalWrite(MS1, LOW);
-  digitalWrite(MS2, LOW);
+  digitalWrite(MS0, HIGH);
+  digitalWrite(MS1, HIGH);
   digitalWrite(EN, HIGH);
 }
 
@@ -56,7 +57,7 @@ void StepForwardDefault()
 {
   Serial.println("Moving forward at default step mode.");
   digitalWrite(dir, LOW); //Pull direction pin low to move "forward"
-  for( int j = 1; j < 190; j++){  //Loop the forward stepping enough times for motion to be visible
+  for( int j = 1; j < 1600; j++){  //Loop the forward stepping enough times for motion to be visible
     digitalWrite(stp,HIGH); //Trigger one step forward
     delay(2);
     digitalWrite(stp,LOW); //Pull step pin low so it can be triggered again
@@ -71,8 +72,8 @@ void SmallStepMode()
 {
   Serial.println("Stepping at 1/8th microstep mode.");
   digitalWrite(dir, LOW); //Pull direction pin low to move "forward"
-  digitalWrite(MS1, HIGH); //Pull MS1, and MS2 high to set logic to 1/8th microstep resolution
-  digitalWrite(MS2, HIGH);
+  digitalWrite(MS0, HIGH); //Pull MS1, and MS2 high to set logic to 1/8th microstep resolution
+  digitalWrite(MS1, HIGH);
   for(int i = 1; i < 1000; i++)  //Loop the forward stepping enough times for motion to be visible
   {
     digitalWrite(stp,HIGH); //Trigger one step forward
