@@ -1,5 +1,5 @@
-#Pandora Principles of engineering final project
-##@Authors: Richard Ballaux, Leo Liu, Alison Palmer, Vienna Scheyer
+# Pandora Principles of engineering final project
+## @Authors: Richard Ballaux, Leo Liu, Alison Palmer, Vienna Scheyer
 
 ## What do you need to install to run this code:
 - The Arduino IDE and the SpeedyStepper built-in library
