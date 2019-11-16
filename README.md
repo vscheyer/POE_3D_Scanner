@@ -14,4 +14,5 @@ There is a folder for the Arduino code. This Arduino receives the 10x10 array fr
 
 ### Want to know more about the project:
 Make sure to visit our project website
-HERE
+[HERE](https://potatoes3dscanner.weebly.com/)
+
